@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ALLINKU - 南开搜索</title>
+    <!-- 引入CSS文件 -->
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/search.css">
+    <link rel="stylesheet" href="/static/css/results.css">
+    <link rel="stylesheet" href="/static/css/pagination.css">
+    <style>
+        /* 用户相关样式 */
+        .user-section {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .auth-buttons button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .login-btn {
+            background-color: #4285f4;
+            color: white;
+        }
+
+        .register-btn {
+            background-color: #34a853;
+            color: white;
+        }
+
+        .user-panel {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px 0;
+            display: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 8px 16px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* 登录/注册模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        /* Flash消息样式 */
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        .flash-message {
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            color: #721c24;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!--在登录/注册功能中应该添加消息提示-->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for message in messages %}
+                <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+    <!-- 用户部分 -->
+    <div class="user-section">
+        {% if current_user.is_authenticated %}
+            <div class="user-panel">
+                <div class="user-avatar">
+                    {{ current_user.username[0] }}
+                </div>
+                <span class="user-name">{{ current_user.username }}</span>
+                <button onclick="toggleDropdown()" class="dropdown-btn">▼</button>
+                <div class="dropdown-menu" id="userDropdown">
+                    <a href="/history">搜索历史</a>
+                    <a href="/preferences">个性化设置</a>
+                    <a href="/logout">退出登录</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="auth-buttons">
+                <button onclick="showLoginModal()" class="login-btn">登录</button>
+                <button onclick="showRegisterModal()" class="register-btn">注册</button>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- 登录模态框 -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>登录</h3>
+                <button class="close-btn" onclick="hideLoginModal()">&times;</button>
+            </div>
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="submit-btn">登录</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 注册模态框 -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>注册</h3>
+                <button class="close-btn" onclick="hideRegisterModal()">&times;</button>
+            </div>
+            <form action="/register" method="POST">
+                <div class="form-group">
+                    <label for="reg-username">用户名</label>
+                    <input type="text" id="reg-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">邮箱</label>
+                    <input type="email" id="reg-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">密码</label>
+                    <input type="password" id="reg-password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-confirm-password">确认密码</label>
+                    <input type="password" id="reg-confirm-password" name="confirm_password" required>
+                </div>
+                <button type="submit" class="submit-btn">注册</button>
+            </form>
+        </div>
+    </div>
+    <div class="search-container">
+        <div class="logo">
+            <span>A</span><span>L</span><span>L</span><span>I</span><span>N</span><span>K</span><span>U</span>
+        </div>
+        <form action="/search" method="GET">
+    <div class="search-input-group">
+        <input type="text"
+               name="q"
+               value="{{ query or '' }}"
+               placeholder="输入搜索关键词...">
+
+        <select name="searchIn">
+            <option value="all">搜索范围：全部</option>
+            <option value="title">仅标题</option>
+            <option value="content">仅内容</option>
+        </select>
+
+        <select name="sortBy">
+            <option value="relevance">按相关度排序</option>
+            <option value="date"> 按时间排序</option>
+        </select>
+
+        <button type="submit">搜索</button>
+    </div>
+</form>
+    </div>
+
+{% if results %}
+<div class="results">
+    <div class="search-stats">
+        找到约 {{total}} 条结果
+    </div>
+
+    {% for result in results %}
+    <div class="result-item">
+        <a href="{{result.url}}" class="result-title" target="_blank">{{result.title|safe}}</a>
+        <div class="result-url">{{result.url}}</div>
+        <div class="result-snippet">{{result.snippet|safe}}</div>
+        <div class="result-meta">
+            {% if result.source %}
+            <span class="result-source">{{result.source}}</span>
+            {% endif %}
+            {% if result.date %}
+            <span class="result-date">{{result.date.strftime('%Y-%m-%d')}}</span>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {# Add pagination #}
+    {% if total_pages > 1 %}
+        {% if current_page > 1 %}
+        <a href="{{ url_for('search', q=query, page=current_page-1, searchIn=search_in, sortBy=sort_by) }}" class="page-nav">上一页</a>
+        {% endif %}
+
+        {% for p in page_range %}
+            {% if p == current_page %}
+            <span class="current-page">{{ p }}</span>
+            {% else %}
+            <a href="{{ url_for('search', q=query, page=p, searchIn=search_in, sortBy=sort_by) }}" class="page-number">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if current_page < total_pages %}
+        <a href="{{ url_for('search', q=query, page=current_page+1, searchIn=search_in, sortBy=sort_by) }}" class="page-nav">下一页</a>
+        {% endif %}
+    {% endif %}
+    <!-- 其他内容 -->
+</div>
+{% else %}
+    {% if query %}
+    <div class="no-results">
+        未找到与 "{{query}}" 相关的结果
+    </div>
+    {% endif %}
+{% endif %}
+<!-- 将这段脚本放在search.html的body标签末尾，在其他script之前 -->
+    <script>
+        // 页面加载时检查登录状态
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/check_login_status')
+                .then(response => response.json())
+                .then(data => {
+                    const userSection = document.querySelector('.user-section');
+                    if (data.logged_in) {
+                        userSection.innerHTML = `
+                            <div class="user-panel">
+                                <div class="user-avatar">${data.username[0]}</div>
+                                <span class="user-name">${data.username}</span>
+                                <button onclick="toggleDropdown()" class="dropdown-btn">▼</button>
+                                <div class="dropdown-menu" id="userDropdown">
+                                    <a href="/history">搜索历史</a>
+                                    <a href="/preferences">个性化设置</a>
+                                    <a href="/logout">退出登录</a>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        userSection.innerHTML = `
+                            <div class="auth-buttons">
+                                <button onclick="showLoginModal()" class="login-btn">登录</button>
+                                <button onclick="showRegisterModal()" class="register-btn">注册</button>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+<!-- JavaScript -->
+    <script>
+        function toggleDropdown() {
+            document.getElementById('userDropdown').classList.toggle('show');
+        }
+
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.add('show');
+        }
+
+        function hideLoginModal() {
+            document.getElementById('loginModal').classList.remove('show');
+        }
+
+        function showRegisterModal() {
+            document.getElementById('registerModal').classList.add('show');
+        }
+
+        function hideRegisterModal() {
+            document.getElementById('registerModal').classList.remove('show');
+        }
+
+        // 点击模态框外部时关闭
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>

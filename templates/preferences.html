@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>个性化设置 - ALLINKU</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <style>
+        .preferences-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .preferences-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preferences-form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .save-button {
+            padding: 10px 20px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .save-button:hover {
+            background-color: #1557b0;
+        }
+
+        .back-button {
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            color: #3c4043;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: #f1f3f4;
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="preferences-container">
+        <div class="preferences-header">
+            <h1>个性化设置</h1>
+            <a href="/" class="back-button">返回搜索</a>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form class="preferences-form" method="POST">
+            <div class="form-group">
+                <label for="default_search_in">默认搜索范围</label>
+                <select name="default_search_in" id="default_search_in">
+                    <option value="all" >全部</option>
+                    <option value="title">仅标题</option>
+                    <option value="content">仅内容</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="default_sort_by">默认排序方式</label>
+                <select name="default_sort_by" id="default_sort_by">
+                    <option value="relevance" >按相关度排序</option>
+                    <option value="date">按时间排序</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="results_per_page">每页显示结果数</label>
+                <select name="results_per_page" id="results_per_page">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="save-button">保存设置</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

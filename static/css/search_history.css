@@ -1,0 +1,79 @@
+.search-history {
+    position: absolute;
+    top: 100%;  /* 紧贴搜索框底部 */
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 9999;  /* 确保在最上层 */
+    margin-top: 0;  /* 移除间距 */
+    width: calc(100% - 110px); /* 减去搜索按钮的宽度和间距 */
+}
+
+.search-history-header {
+    padding: 10px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #666;
+}
+
+.search-history-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    background: white; /* 确保背景是白色的 */
+}
+
+.search-history-item {
+    padding: 8px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.search-history-item:hover {
+    background-color: #f5f5f5;
+}
+
+.search-history-query {
+    flex-grow: 1;
+    color: #333;
+}
+
+.delete-history {
+    color: #999;
+    padding: 4px 8px;
+    visibility: hidden;
+}
+
+.search-history-item:hover .delete-history {
+    visibility: visible;
+}
+
+.search-history-footer {
+    padding: 10px 15px;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+.view-more {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.clear-all {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.clear-all:hover, .view-more:hover {
+    text-decoration: underline;
+}

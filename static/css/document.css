@@ -1,0 +1,57 @@
+        .document-result {
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            margin-bottom: 15px;
+        }
+
+        .document-result .result-title {
+            font-size: 16px;
+            color: #1a0dab;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .document-result .result-title:hover {
+            text-decoration: underline;
+        }
+
+        .document-result .result-meta {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .document-result .result-url {
+            color: #006621;
+            text-decoration: none;
+        }
+
+        .document-info {
+            font-size: 13px;
+            color: #666;
+            margin: 8px 0;
+            line-height: 1.4;
+        }
+
+        .document-info span {
+            margin-right: 15px;
+            display: inline-block;
+        }
+
+        .document-info .file-type {
+            color: #28a745;
+        }
+
+        .document-info .file-size {
+            color: #dc3545;
+        }
+
+        .document-info .upload-date {
+            color: #6c757d;
+        }
+
+        .document-info .filename {
+            color: #0056b3;
+        }

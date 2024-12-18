@@ -1,0 +1,120 @@
+.results {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.search-stats {
+    color: #70757a;
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+/* 单个结果项 */
+.result-item {
+    max-width: 670px;
+    margin-bottom: 25px;
+    padding: 15px 20px;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* 标题链接 */
+.result-title {
+    color: #1a0dab;
+    font-size: 18px;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.result-title:hover {
+    text-decoration: underline;
+}
+
+/* 标题高亮样式 */
+.result-title em {
+    font-weight: bold;
+    font-style: normal;
+    color: #1a0dab;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+.result-title:hover em {
+    text-decoration: underline;
+}
+
+/* 结果元信息区域 */
+.result-meta {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #006621;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* URL显示 */
+.result-url {
+    color: #006621;
+    text-decoration: none;
+}
+
+/* 快照链接 */
+.snapshot-link {
+    color: #1a73e8;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.snapshot-link:hover {
+    text-decoration: underline;
+}
+
+/* 内容摘要 */
+.result-snippet {
+    color: #3c4043;
+    font-size: 14px;
+    line-height: 1.58;
+    margin: 4px 0;
+}
+
+/* 高亮匹配词 */
+.result-snippet em {
+    font-weight: bold;
+    font-style: normal;
+    background-color: #ffffd0;
+}
+
+/* 结果底部信息 */
+.result-footer {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #70757a;
+}
+
+.result-source, 
+.result-date {
+    margin-right: 10px;
+}
+
+/* 无结果提示 */
+.no-results {
+    text-align: center;
+    color: #70757a;
+    margin-top: 40px;
+    padding: 20px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .results {
+        padding: 0 15px;
+    }
+    
+    .result-item {
+        padding: 12px 15px;
+    }
+}

@@ -1,0 +1,78 @@
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #f5f5f5;
+}
+
+.suggestion-item .highlight {
+    font-weight: bold;
+}
+
+.suggestion-item .icon {
+    color: #666;
+    font-size: 14px;
+    min-width: 20px;
+}
+
+.suggestion-item.history {
+    background-color: #f8f9fa;
+}
+
+.suggestion-item.history .icon::before {
+    content: "⏱";
+}
+
+.suggestion-item.title .icon::before {
+    content: "🔍";
+}
+
+/* 确保搜索联想框在历史记录之上 */
+.search-suggestions {
+    z-index: 1001;
+}
+
+.search-history {
+    z-index: 1000;
+}
+
+/* 优化滚动条样式 */
+.search-suggestions::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb {
+    background-color: #ddd;
+    border-radius: 3px;
+}
+
+.search-suggestions::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+}

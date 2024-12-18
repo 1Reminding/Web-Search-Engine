@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息 - ALLINKU</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <style>
+        .profile-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .profile-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .save-button {
+            padding: 10px 20px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .save-button:hover {
+            background-color: #1557b0;
+        }
+
+        .back-button {
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            color: #3c4043;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: #f1f3f4;
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>个人信息</h1>
+            <a href="/" class="back-button">返回搜索</a>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="profile-form">
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="role">身份</label>
+                    <select id="role" name="role">
+                        <option value="未设置" >请选择身份</option>
+                        <option value="本科生">本科生</option>
+                        <option value="研究生">研究生</option>
+                        <option value="博士生" >博士生</option>
+                        <option value="教师">教师</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="college">学院</label>
+                    <input type="text" id="college" name="college" value="{{ profile.college if profile.college else '' }}"
+                           placeholder="请输入所属学院">
+                </div>
+
+                <div class="form-group">
+                    <label for="age">年龄</label>
+                    <input type="number" id="age" name="age" value="{{ profile.age if profile.age else '' }}"
+                           placeholder="请输入年龄">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="save-button">保存修改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('profileForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = {
+            role: document.getElementById('role').value,
+            college: document.getElementById('college').value,
+            age: document.getElementById('age').value ? parseInt(document.getElementById('age').value) : null
+        };
+
+        try {
+            const response = await fetch('/api/profile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('个人信息更新成功！');
+                location.reload();
+            } else {
+                alert(result.message || '更新失败，请重试');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('更新失败，请重试');
+        }
+    });
+    </script>
+</body>
+</html>

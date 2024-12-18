@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>搜索历史 - ALLINKU</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <style>
+        .history-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .history-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-list {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .history-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            background: white;
+            transition: background-color 0.2s;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .query-text {
+            color: #1a73e8;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .search-meta {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .search-time {
+            color: #888;
+        }
+
+        .back-button {
+            padding: 8px 16px;
+            background-color: #f8f9fa;
+            color: #3c4043;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            background-color: #f1f3f4;
+        }
+
+        .clear-history {
+            padding: 8px 16px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .no-history {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="history-container">
+        <div class="history-header">
+            <h1>搜索历史</h1>
+            <div>
+                <a href="/" class="back-button">返回搜索</a>
+                {% if history %}
+                <button class="clear-history" onclick="clearHistory()">清空历史</button>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if history %}
+        <div class="history-list">
+            {% for item in history %}
+            <div class="history-item">
+                <div class="query-text">
+                    <a href="{{ url_for('search', q=item.query, searchIn=item.search_in, sortBy=item.sort_by) }}">
+                        {{ item.query }}
+                    </a>
+                </div>
+                <div class="search-meta">
+                    搜索范围: {{ {'all': '全部', 'title': '标题', 'content': '内容'}[item.search_in] }}
+                    | 排序方式: {{ {'relevance': '相关度', 'date': '时间'}[item.sort_by] }}
+                    <span class="search-time">| {{ item.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-history">
+            暂无搜索历史
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function clearHistory() {
+            if (confirm('确定要清空搜索历史吗？')) {
+                fetch('/clear_history', {
+                    method: 'POST',
+                    credentials: 'same-origin'
+                }).then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

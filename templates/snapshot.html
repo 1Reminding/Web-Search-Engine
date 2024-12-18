@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALLINKU - 网页快照</title>
+    <style>
+        .snapshot-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            z-index: 1000;
+        }
+        .snapshot-info {
+            margin: 10px 0;
+            color: #666;
+        }
+        .snapshot-content-wrapper {
+            margin-top: 120px; /* 为固定定位的header留出空间 */
+            padding: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #4285f4;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .original-link {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        .original-link:hover {
+            text-decoration: underline;
+        }
+        /* 添加基本的响应式样式 */
+        @media (max-width: 768px) {
+            .snapshot-header {
+                padding: 10px;
+            }
+            .snapshot-content-wrapper {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="snapshot-header">
+        <a href="{{ url_for('index') }}" class="back-link">返回搜索</a>
+        <h2>{{ title }}</h2>
+        <div class="snapshot-info">
+            <div>原始网址：<a href="{{ original_url }}" class="original-link" target="_blank">{{ original_url }}</a></div>
+            <div>快照时间：{{ captured_time }}</div>
+            {% if source %}<div>来源：{{ source }}</div>{% endif %}
+        </div>
+    </div>
+    <div class="snapshot-content-wrapper">
+        {% if content %}
+            <div class="snapshot-content">
+                {{ content | safe }}
+            </div>
+        {% else %}
+            <div class="no-content">
+                未找到快照内容
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // 处理快照中的相对链接
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取原始URL的域名部分
+            const originalUrl = "{{ original_url }}";
+            const baseUrl = new URL(originalUrl).origin;
+
+            // 处理所有链接
+            const links = document.getElementsByTagName('a');
+            for(let link of links) {
+                if(link.href && link.href.startsWith('/')) {
+                    link.href = baseUrl + link.href;
+                }
+            }
+
+            // 处理所有图片
+            const images = document.getElementsByTagName('img');
+            for(let img of images) {
+                if(img.src && img.src.startsWith('/')) {
+                    img.src = baseUrl + img.src;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

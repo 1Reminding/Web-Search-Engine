@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ALLINKU - 南开搜索</title>
+<!--    &lt;!&ndash; 引入CSS文件 &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="/static/css/main.css">-->
+    <style>
+        /* 其他样式保持不变 */
+        .logo {
+            font-size: 72px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            cursor: default;
+        }
+        /* 修改logo样式，每个字母不同颜色 */
+        .logo span:nth-child(1) { color: #4285f4; } /* A */
+        .logo span:nth-child(2) { color: #ea4335; } /* L */
+        .logo span:nth-child(3) { color: #fbbc05; } /* L */
+        .logo span:nth-child(4) { color: #4285f4; } /* I */
+        .logo span:nth-child(5) { color: #34a853; } /* N */
+        .logo span:nth-child(6) { color: #ea4335; } /* K */
+        .logo span:nth-child(7) { color: #fbbc05; } /* U */
+        /* 搜索容器样式 */
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 100px;
+            padding: 20px;
+        }
+        /* 搜索表单样式 */
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 750px;/* 这里可以调整整个表单区域的宽度 */
+            margin: 0 auto;
+        }
+        .search-box {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            outline: none;
+            margin-right: 10px;
+        }
+        .search-button {
+            padding: 12px 24px;
+            font-size: 16px;
+            color: white;
+            background-color: #4285f4;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .search-button:hover {
+            background-color: #357abd;
+        }
+        .results {
+            max-width: 720px;/* 这里可以调整搜索结果区域的宽度 */
+            margin: 0 auto;
+        }
+
+        /* 结果统计 */
+        .search-stats {
+            color: #70757a;
+            font-size: 14px;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        /* 单个结果项 */
+        .result-item {
+            max-width: 670px;  /* 这里可以调整每个搜索结果项的宽度 */
+            margin-bottom: 25px;
+            padding: 0 20px;
+        }
+
+        /* 标题链接 */
+        .result-title {
+            color: #1a0dab;
+            font-size: 18px;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .result-title:hover {
+            text-decoration: underline;
+        }
+        /* 标题高亮样式 */
+        .result-title em {
+            font-weight: bold;
+            font-style: normal;
+            color: #1a0dab;
+            background-color: transparent;
+            text-decoration: none;
+        }
+
+        .result-title:hover em {
+            text-decoration: underline;
+        }
+
+        /* URL显示 */
+        .result-url {
+            color: #006621;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        /* 内容摘要 */
+        .result-snippet {
+            color: #3c4043;
+            font-size: 14px;
+            line-height: 1.58;
+            margin-bottom: 4px;
+        }
+
+        /* 高亮匹配词 */
+        .result-snippet em {
+            font-weight: bold;
+            font-style: normal;
+            background-color: #ffffd0;
+        }
+
+        /* 元信息（来源和日期） */
+        .result-meta {
+            color: #70757a;
+            font-size: 12px;
+        }
+
+        .result-meta span:not(:last-child)::after {
+            content: " - ";
+        }
+
+        /* 无结果提示 */
+        .no-results {
+            text-align: center;
+            color: #70757a;
+            margin-top: 40px;
+        }
+        /* 搜索框组样式 */
+        .search-input-group {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 750px; /* 这里可以调整搜索框的宽度 */
+            margin: 0 auto 20px;
+            padding: 5px 0;
+        }
+
+         /* 搜索框样式 */
+        .search-input-group input {
+            flex: 1;
+            height: 44px;
+            padding: 0 20px;
+            font-size: 16px;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            outline: none;
+            margin-right: 10px;
+            box-shadow: 0 1px 6px rgba(32,33,36,.28);
+        }
+        /* 搜索框悬停效果 */
+        .search-input-group input:hover,
+        .search-input-group input:focus {
+            box-shadow: 0 1px 6px rgba(32,33,36,.28);
+            border-color: rgba(223,225,229,0);
+        }
+
+        /* 下拉框样式 */
+        .search-input-group select {
+            height: 36px;
+            padding: 0 10px;
+            margin: 0 5px;
+            border: 1px solid #dfe1e5;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            color: #3c4043;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* 搜索按钮样式 */
+        .search-input-group button {
+            height: 36px;
+            padding: 0 16px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        /* 搜索按钮悬停效果 */
+        .search-input-group button:hover {
+            background-color: #1557b0;
+            box-shadow: 0 1px 2px 0 rgba(66,133,244,0.3),
+                       0 1px 3px 1px rgba(66,133,244,0.15);
+        }
+        /* 分页样式 */
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .pagination a, .pagination span {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 0 4px;
+            color: #1a0dab;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+
+        .pagination .current-page {
+            background-color: #f8f9fa;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .pagination a:hover {
+            background-color: #f8f9fa;
+        }
+
+        .page-nav {
+            color: #1a0dab;
+        }
+
+        .page-number {
+            color: #1a0dab;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <div class="logo">
+            <span>A</span><span>L</span><span>L</span><span>I</span><span>N</span><span>K</span><span>U</span>
+        </div>
+        <form action="/search" method="GET">
+    <div class="search-input-group">
+        <input type="text"
+               name="q"
+               value="{{ query or '' }}"
+               placeholder="输入搜索关键词...">
+
+        <select name="searchIn">
+            <option value="all">搜索范围：全部</option>
+            <option value="title">仅标题</option>
+            <option value="content">仅内容</option>
+        </select>
+
+        <select name="sortBy">
+            <option value="relevance">按相关度排序</option>
+            <option value="date"> 按时间排序</option>
+        </select>
+        <button type="submit">搜索</button>
+    </div>
+</form>
+    </div>
+
+    {% if results %}
+    <div class="results">
+    {% if results %}
+    <div class="search-stats">
+        找到约 {{total}} 条结果
+    </div>
+
+    {% for result in results %}
+    <div class="result-item">
+        <a href="{{result.url}}" class="result-title" target="_blank">{{result.title|safe}}</a>
+        <div class="result-url">{{result.url}}</div>
+        <div class="result-snippet">{{result.snippet|safe}}</div>
+        <div class="result-meta">
+            {% if result.source %}
+            <span class="result-source">{{result.source}}</span>
+            {% endif %}
+            {% if result.date %}
+            <span class="result-date">{{result.date.strftime('%Y-%m-%d')}}</span>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {# Add pagination #}
+    {% if total_pages > 1 %}
+        {% if current_page > 1 %}
+        <a href="{{ url_for('search', q=query, page=current_page-1, searchIn=search_in, sortBy=sort_by) }}" class="page-nav">上一页</a>
+        {% endif %}
+
+        {% for p in page_range %}
+            {% if p == current_page %}
+            <span class="current-page">{{ p }}</span>
+            {% else %}
+            <a href="{{ url_for('search', q=query, page=p, searchIn=search_in, sortBy=sort_by) }}" class="page-number">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if current_page < total_pages %}
+        <a href="{{ url_for('search', q=query, page=current_page+1, searchIn=search_in, sortBy=sort_by) }}" class="page-nav">下一页</a>
+        {% endif %}
+    {% endif %}
+    {% else %}
+    {% if query %}
+    <div class="no-results">
+        未找到与 "{{query}}" 相关的结果
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+    {% endif %}
+</body>
+</html>

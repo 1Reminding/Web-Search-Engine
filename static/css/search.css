@@ -1,0 +1,160 @@
+/* 搜索容器样式 */
+.search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 170px; /* 调整上边距，为顶部选项栏和用户状态栏留出空间 */
+    padding: 20px;
+    position: relative; /* 添加这行 */
+}
+
+/* 搜索选项栏样式 */
+/* 修改搜索选项栏样式 */
+.search-options-bar {
+    width: 100%;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dfe1e5;
+    padding: 10px 0;
+    position: fixed;
+    top: 0px; /* 调整顶部位置 */
+    left: 0;
+    z-index: 100;
+}
+
+.options-container {
+    max-width: 750px; /* 与搜索框宽度保持一致 */
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 添加居中对齐 */
+    gap: 15px;
+}
+
+/* 选项区域的下拉框样式 */
+.options-container select {
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid #dfe1e5;
+    border-radius: 4px;
+    background-color: white;
+    color: #3c4043;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* 文档类型选项样式 */
+#fileTypeOptions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* 主搜索表单样式 */
+.main-search-form {
+    width: 100%;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.main-search-input {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+    position: relative; /* 添加这行 */
+}
+
+/* 主搜索框样式 */
+.main-search-input input {
+    flex: 1;
+    height: 44px;
+    padding: 0 20px;
+    font-size: 16px;
+    border: 1px solid #dfe1e5;
+    border-radius: 24px;
+    outline: none;
+    box-shadow: 0 1px 6px rgba(32,33,36,.28);
+}
+
+/* 搜索框悬停和焦点效果 */
+.main-search-input input:hover,
+.main-search-input input:focus {
+    box-shadow: 0 1px 6px rgba(32,33,36,.28);
+    border-color: rgba(223,225,229,0);
+}
+
+/* 搜索按钮样式 */
+.main-search-input button {
+    height: 44px;
+    padding: 0 30px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* 搜索按钮悬停效果 */
+.main-search-input button:hover {
+    background-color: #1557b0;
+    box-shadow: 0 1px 2px 0 rgba(66,133,244,0.3),
+                0 1px 3px 1px rgba(66,133,244,0.15);
+}
+
+/* 搜索提示样式 */
+.search-tips {
+    max-width: 600px;
+    margin: 15px auto 0;
+    text-align: center;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+.search-tip {
+    margin: 5px 0;
+    color: #70757a;
+    font-size: 14px;
+}
+
+/* 结果统计样式 */
+.search-stats {
+    color: #70757a;
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+/* 响应式布局调整 */
+@media (max-width: 768px) {
+    .options-container {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px;
+    }
+
+    .main-search-input {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .main-search-input button {
+        width: 100%;
+    }
+
+    .search-container {
+        margin-top: 200px;
+    }
+
+    #fileTypeOptions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
