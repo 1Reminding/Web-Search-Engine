@@ -7,7 +7,7 @@
 
 本项目是基于南开校内资源构建的一个搜索引擎——**ALLINKU**。
 
-![](../img-folder/image-20241217170449292.png)
+![](img-folder/image-20241217170449292.png)
 ![image-20241217170449292](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217170449292.png)
 
 - 项目爬取了南开新闻、学术资源、教务、校史、国际合作、校友会、学工会、高等教育研究所、招生办以及各学院的数据总计43万，筛选后进行分配存储在MongoDB中，在10w+数据上用Whoosh库在多个索引域上构建索引。
