@@ -1296,6 +1296,6 @@ if user_profile:
 
 ## Congratulations！
 
-## 成功从0开始实现了搜索引擎的搭建！![19255F29](C:\Users\lenovo\AppData\Local\Temp\SGPicFaceTpBq\36344\19255F29.png)
+## 成功从0开始实现了搜索引擎的搭建！![](img-folder/19255F29.png)
 
 完整项目：https://github.com/1Reminding/Information-Retrieval
