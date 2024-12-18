@@ -8,7 +8,6 @@
 本项目是基于南开校内资源构建的一个搜索引擎——**ALLINKU**。
 
 ![](img-folder/image-20241217170449292.png)
-![image-20241217170449292](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217170449292.png)
 
 - 项目爬取了南开新闻、学术资源、教务、校史、国际合作、校友会、学工会、高等教育研究所、招生办以及各学院的数据总计43万，筛选后进行分配存储在MongoDB中，在10w+数据上用Whoosh库在多个索引域上构建索引。
 - 使用Pagerank进行链接分析，评估网页权重。
@@ -152,25 +151,25 @@ NKU_Web_SearchEngine/
 
 **NEWS数据集**（约8w)用来存储网页数据，保存的相关标签信息如图：
 
-![image-20241217172152142](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217172152142.png)
+![](img-folder/image-20241217172152142.png)
 
 **NEWS1数据集**(约2w筛选后）用来存储网页数据，保存的相关标签信息如图（NEWS1数据需要后处理，去补充更多的信息）：
 
-![image-20241217184922146](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217184922146.png)
+![](img-folder/image-20241217184922146.png)
 
-![image-20241217184806123](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217184806123.png)
+![](img-folder/image-20241217184806123.png)
 
-![image-20241217185008968](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217185008968.png)
+![](img-folder/image-20241217185008968.png)
 
 **网页快照数据集**相关内容WEB_snapshot：
 
-![image-20241217174713138](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217174713138.png)
+![](img-folder/image-20241217174713138.png)
 
 **文档数据集**（约4000条）相关内容：
 
-![image-20241217175037417](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217175037417.png)
+![](img-folder/image-20241217175037417.png)
 
-![image-20241217175233504](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217175233504.png)
+![](img-folder/image-20241217175233504.png)
 
 
 
@@ -303,11 +302,11 @@ def calculate_pagerank(self, damping_factor=0.85, max_iterations=100):
 
 最后得到每个网页的pagerank_score并写入MongoDB，示例数据如下：
 
-![image-20241217185208423](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217185208423.png)
+![](img-folder/image-20241217185208423.png)
 
 #### pagerank值合理性验证：
 
-![image-20241217185558358](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217185558358.png)
+![](img-folder/image-20241217185558358.png)
 
 - 对于10万条数据来说，PageRank的**总和应接近1**，而平均值理论上应接近 1/100000=1e−5，现在**平均值**为 `1.197831e-05`，接近于理论值，说明结果是合理的。
 
@@ -325,7 +324,7 @@ def calculate_pagerank(self, damping_factor=0.85, max_iterations=100):
 
 首先打开搜索服务用最广泛涉及到的词检查数据量：
 
-![image-20241217192631920](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217192631920.png)
+![](img-folder/image-20241217192631920.png)
 
 10W+的数据里约有8w包含关键词，是合理且正确的。
 
@@ -335,9 +334,9 @@ def calculate_pagerank(self, damping_factor=0.85, max_iterations=100):
 
 #### 示例结果：
 
-![image-20241217192419633](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217192419633.png)
+![](img-folder/image-20241217192419633.png)
 
-![image-20241217192259748](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217192259748.png)
+![](img-folder/image-20241217192259748.png)
 
 #### 关键实现——（代码简化）
 
@@ -381,7 +380,7 @@ def _get_field_config(self, search_in='all'):
 
 1. 查询范围：
 
-   ![image-20241217193833186](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217193833186.png)
+   ![](img-folder/image-20241217193833186.png)
 
    - 可以选择只搜索标题(title)
    - 只搜索内容(content)
@@ -389,7 +388,7 @@ def _get_field_config(self, search_in='all'):
 
 2. 排序支持：
 
-   ![image-20241217193922327](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217193922327.png)
+   ![](img-folder/image-20241217193922327.png)
 
    - 默认按相关度排序(relevance)
    - 可以按日期排序(date)
@@ -408,10 +407,10 @@ def _get_field_config(self, search_in='all'):
 
 不选择文件类型时是搜索全部类型的文档
 
-![image-20241217195003153](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217195003153.png)
+![](img-folder/image-20241217195003153.png)
 
 选择特定文件类型后会进行筛选（同时也可以选择**搜索范围**和**排序方法**）：
-![image-20241217195200393](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217195200393.png)
+![](img-folder/image-20241217195200393.png)
 
 观察到数量从21减到16，过滤掉了之前不属于筛选条件的文件。
 
@@ -508,11 +507,11 @@ def _process_single_result(self, hit):
 
 在基础查询功能下搜索“夜跑活动”，选中只筛选标题，看到有五个结果，且其中一个不是精确匹配，剩下的标题中都包含完整且连续的“夜跑活动”：
 
-![image-20241217201947701](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217201947701.png)
+![](img-folder/image-20241217201947701.png)
 
 接下来打开短语搜索，搜索同样的内容，检查是否还会被搜到：
 
-![image-20241217202328199](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217202328199.png)
+![](img-folder/image-20241217202328199.png)
 
 看到数量从5减少到4，检查发现含有完整信息的内容都被检索到，原本在第一条的信息不符合精确的短语查询被过滤掉。
 
@@ -616,9 +615,9 @@ def _build_phrase_query(self, query_text, field_config, strict_mode=False):
 
 为了体现区别，我们使用李？和李*进行测试，保持搜索和筛选、排序选择一致，不切换账号保证不会受到个性化相关功能影响排序：
 
-![image-20241217205341225](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217205341225.png)
+![](img-folder/image-20241217205341225.png)
 
-![image-20241217205153730](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217205153730.png)
+![](img-folder/image-20241217205153730.png)
 
 可以观察到在使用李*之后，查询到了三个字的名字可以匹配。
 
@@ -686,42 +685,42 @@ def _build_wildcard_query(self, query_text, field_config):
 
 概览（主界面是搜索历史）：
 
-![image-20241217210435856](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217210435856.png)
+![](img-folder/image-20241217210435856.png)
 
 用户注册信息：
 
-![image-20241217210643902](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217210643902.png)
+![](img-folder/image-20241217210643902.png)
 
 详细身份信息（默认可以不填，也可以进入**完善个人信息**模块填写，便于个性化功能的精准实现）：
 
-![image-20241217210524271](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217210524271.png)
+![](img-folder/image-20241217210524271.png)
 
 登录历史：
 
-![image-20241217210942244](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217210942244.png)
+![](img-folder/image-20241217210942244.png)
 
 #### 搜索历史表单
 
 其中**搜索历史表单**中显示了每次搜索的内容、搜索的范围（全部、仅标题、仅内容）、排序方式（相关度、时间）、搜索时的时间。
 
-![image-20241217205927444](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217205927444.png)
+![](img-folder/image-20241217205927444.png)
 
 #### 查询日志主界面显示
 
 切换不同的用户进入到界面点击搜索框未输入时可以显示用户曾经的搜索历史，同时和用户表单中的“搜索历史”模块绑定，在主界面只显示十条，点击查看更多可以跳转至history.html模块（也就是从下拉菜单进入到搜索历史板块）查看所有搜索历史：
 
-![image-20241217210224984](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217210224984.png)
+![](img-folder/image-20241217210224984.png)
 
 点击搜索框显示不同用户的查询日志：
 
-![image-20241217211441465](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217211441465.png)
+![](img-folder/image-20241217211441465.png)
 
 切换用户（看时间是之前的搜索记录）：
-![image-20241217211645716](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217211645716.png)
+![](img-folder/image-20241217211645716.png)
 
 点击搜索历史表单
 
-![image-20241217211724777](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217211724777.png)
+![](img-folder/image-20241217211724777.png)
 
 #### 3.4.6 网页快照
 
@@ -731,11 +730,11 @@ def _build_wildcard_query(self, query_text, field_config):
 
 主搜索界面：
 
-![image-20241217212505606](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217212505606.png)
+![](img-folder/image-20241217212505606.png)
 
 点击网页快照（这里点击第一个）：
 
-![image-20241217212805264](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217212805264.png)
+![](img-folder/image-20241217212805264.png)
 
 #### 关键实现——代码简化
 
@@ -837,25 +836,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 首先完善用户信息，在主界面用户的下拉菜单选择**完善个人信息**选项：
 
-![image-20241217220410027](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217220410027.png)
+![](img-folder/image-20241217220410027.png)
 
 进入个人信息表单，选择不同的身份和所属学院（在代码中给学院和学院相关的活动给予了较大的权重）：
 
-![image-20241217220109997](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217220109997.png)
+![](img-folder/image-20241217220109997.png)
 
-![image-20241217220232016](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217220232016.png)
+![](img-folder/image-20241217220232016.png)
 
 MongoDB同步更新了user_profiles内容：
 
-![image-20241217220710450](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217220710450.png)
+![](img-folder/image-20241217220710450.png)
 
 使用**计网本科生**的身份去搜索“夜跑活动”：
 
-![image-20241217221818883](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217221818883.png)
+![](img-folder/image-20241217221818883.png)
 
 以**金融教师**的身份去搜索“夜跑活动”：
 
-![image-20241217221306764](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217221306764.png)
+![](img-folder/image-20241217221306764.png)
 
 我们来观察一下终端输出的部分检查点（没显示完全加分策略，这里只用来突出身份对于搜索结果的影响：
 
@@ -863,11 +862,11 @@ MongoDB同步更新了user_profiles内容：
 
 计算机本科生：
 
-![image-20241217222258357](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217222258357.png)
+![](img-folder/image-20241217222258357.png)
 
 金融教师：
 
-![image-20241217221619006](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217221619006.png)
+![](img-folder/image-20241217221619006.png)
 
 #### 关键实现——代码简化
 
@@ -1043,11 +1042,11 @@ COLLEGE_RELATIONS = {
 
 计算机本科生xing，曾经搜索过夜跑活动（刚才的测试）：
 
-![image-20241217231353742](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217231353742.png)
+![](img-folder/image-20241217231353742.png)
 
 金融教师搜索（这里先删除了刚刚测试时的搜索记录）：
 
-![image-20241217231856471](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217231856471.png)
+![](img-folder/image-20241217231856471.png)
 
 #### 关键实现——代码简化
 
@@ -1210,11 +1209,11 @@ if user_profile:
 
 - 提供个性化搜索偏好设置（**默认**搜索范围、排序方式、每页结果数）
 
-![image-20241217234706993](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217234706993.png)
+![](img-folder/image-20241217234706993.png)
 
 之后在搜索时就可以按照设置的偏好直接进行，同时更新MongoDB相应数据库偏好信息：
 
-![image-20241217234622692](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20241217234622692.png)
+![](img-folder/image-20241217234622692.png)
 
 - 允许用户完善个人信息（身份、学院、年龄等）
 
